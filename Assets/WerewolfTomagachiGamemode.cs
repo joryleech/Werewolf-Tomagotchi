@@ -55,22 +55,47 @@ public class WerewolfTomagachiGamemode : GameModeBase
     public event Action<string> changeMenuActions;
     public void changeMenu(string key)
     {
+        menuOpen = key;
         if (changeMenuActions != null)
         {
             changeMenuActions(key);
         }
+    }
+
+
+    public bool canUpdateCreature()
+    {
+        return true;
     }
 }
 
 public class Room
 {
     public Furniture[] furniture;
+    
     public Room()
     {
         furniture = new Furniture[] {
             new Furniture("lamp")
         };
     }
+
+    public bool lightOn = true;
+    public bool isLightOn()
+    {
+        try
+        {
+            Furniture lamp = Array.Find(furniture, p => p.id == "lamp");
+            return lightOn && lamp.owned && !lamp.broken;
+        }
+        catch(ArgumentNullException e)
+        {
+            Debug.LogError("Lamp does not exist");
+            return false;
+        }
+    }
+
+
 
     public void Load(SaveManager s, string preface = "")
     {
@@ -87,6 +112,14 @@ public class Room
             f.Save(s, preface);
         }
     }
+
+    public void Clean()
+    {
+        foreach(Furniture f in furniture)
+        {
+            f.clean();
+        }
+    }
 }
 
 public class Furniture
@@ -97,9 +130,9 @@ public class Furniture
         this.owned = false;
         this.broken = false;
     }
-    bool broken;
-    bool owned;
-    string id;
+    public bool broken;
+    public bool owned;
+    public string id;
     public void Load(SaveManager s,string preface = "")
     {
         this.broken = s.getKey(preface + id + "." + "broken");
@@ -124,7 +157,7 @@ public class Furniture
     }
     public void clean()
     {
-        if (this.broken)
+        if (this.broken || this.id == "poop")
         {
             this.owned = false;
             this.broken = false;
@@ -153,6 +186,7 @@ public class Creature
     {
 
     }
+
 
     public void Save(SaveManager s, string preface = "")
     {
