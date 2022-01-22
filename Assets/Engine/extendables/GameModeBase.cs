@@ -19,6 +19,7 @@ public class GameModeBase : MonoBehaviour
         {
             Destroy(this);
             //throw new System.Exception("GameModeError: Multiple GameModes Exist");
+            return;
         }else
         {
             current = this;

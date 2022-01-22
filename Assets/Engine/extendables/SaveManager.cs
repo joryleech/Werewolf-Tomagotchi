@@ -46,7 +46,6 @@ public class SaveManager
         {
             string fileContents = readFile( this.fileName);
             this.saveObject = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(fileContents, new JsonConverter[] { new MyConverter() });
-            Debug.Log(JsonConvert.SerializeObject(saveObject));
         }
         catch(Exception e)
         {
