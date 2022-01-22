@@ -7,6 +7,7 @@ public class TopMenuController : MonoBehaviour
     public TMPro.TMP_Text nameContainer;
     public Sprite[] sprites;
     public SpriteRenderer pawprintRenderer;
+
     // Start is called before the first frame update
     void Start()
     {

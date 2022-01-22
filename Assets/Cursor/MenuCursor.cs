@@ -7,10 +7,12 @@ public class MenuCursor: MonoBehaviour
     SpriteRenderer sr;
     public Sprite unclicked;
     public Sprite clicked;
+    AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
         sr = this.GetComponent<SpriteRenderer>();
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     private void OnGUI()
@@ -21,9 +23,14 @@ public class MenuCursor: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetMouseButtonDown(0))
+        {
+            audioSource.Play();
+        }
         if (Input.GetMouseButton(0))
         {
             sr.sprite = clicked;
+
         }
         else
         {

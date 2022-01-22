@@ -103,8 +103,8 @@ public class Furniture
     string id;
     public void Load(SaveManager s,string preface = "")
     {
-        this.broken = s.getKey(preface + "broken");
-        this.owned = s.getKey(preface + "owned");
+        this.broken = s.getKey(preface + id + "." + "broken");
+        this.owned = s.getKey(preface + id + "." + "owned");
     }
     public void Save(SaveManager s, string preface = "")
     {
@@ -143,6 +143,10 @@ public class Creature
     public float stat_hungry = 50f;
     public float stat_happy = 50f;
     public float stat_tired = 50f;
+    public float stat_dirty = 50f;
+
+    public float start_werewolf_bathroom = 50f;
+    public float stat_werewolf_happy = 50f;
 
     public Creature(string name = "", int pawId = 0)
     {
@@ -158,6 +162,8 @@ public class Creature
         s.setKey(preface + "stat_hungry", stat_hungry);
         s.setKey(preface + "stat_happy", stat_happy);
         s.setKey(preface + "stat_tired", stat_tired);
+        s.setKey(preface + "start_werewolf_bathroom", start_werewolf_bathroom);
+        s.setKey(preface + "stat_werewolf_happy", stat_werewolf_happy);
 
     }
 
@@ -170,6 +176,8 @@ public class Creature
         stat_hungry = (float)s.getKey(preface + "stat_boredom");
         stat_happy = (float)s.getKey(preface + "stat_happy");
         stat_tired = (float)s.getKey(preface + "stat_tired");
+        stat_tired = (float)s.getKey(preface + "start_werewolf_bathroom");
+        stat_tired = (float)s.getKey(preface + "stat_werewolf_happy");
     }
 
     public bool isValid()
