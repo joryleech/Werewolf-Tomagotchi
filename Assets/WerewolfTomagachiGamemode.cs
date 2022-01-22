@@ -55,7 +55,6 @@ public class WerewolfTomagachiGamemode : GameModeBase
     public event Action<string> changeMenuActions;
     public void changeMenu(string key)
     {
-        menuOpen = key;
         if (changeMenuActions != null)
         {
             changeMenuActions(key);
@@ -148,6 +147,8 @@ public class Creature
     public float start_werewolf_bathroom = 50f;
     public float stat_werewolf_happy = 50f;
 
+    public long money = 20;
+
     public Creature(string name = "", int pawId = 0)
     {
 
@@ -164,7 +165,7 @@ public class Creature
         s.setKey(preface + "stat_tired", stat_tired);
         s.setKey(preface + "start_werewolf_bathroom", start_werewolf_bathroom);
         s.setKey(preface + "stat_werewolf_happy", stat_werewolf_happy);
-
+        s.setKey(preface + "money", money);
     }
 
     public void Load(SaveManager s, string preface = "")
@@ -178,6 +179,8 @@ public class Creature
         stat_tired = (float)s.getKey(preface + "stat_tired");
         stat_tired = (float)s.getKey(preface + "start_werewolf_bathroom");
         stat_tired = (float)s.getKey(preface + "stat_werewolf_happy");
+
+        money = (long)s.getKey(preface + "money");
     }
 
     public bool isValid()

@@ -47,3 +47,5 @@ MonoBehaviour:
   currentPawn: {fileID: 0}
   debug: 0
   camera: {fileID: 0}
+  forceLoad: 0
+  menuOpen: 
