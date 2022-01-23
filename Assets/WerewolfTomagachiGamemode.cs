@@ -104,7 +104,7 @@ public class WerewolfTomagachiGamemode : GameModeBase
         {
             updateFurnitureActions();
         }
-  
+   
     }
 
 }
@@ -117,6 +117,7 @@ public class Room
     {
         furniture = new Furniture[] {
             new Furniture("lamp"),
+            new Furniture("poop"),
             new Furniture("table"),
             new Furniture("loom")
         };
