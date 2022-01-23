@@ -11,9 +11,17 @@ public class TopMenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
-        nameContainer.text = gm.currentCreature.name;
-        pawprintRenderer.sprite = sprites[gm.currentCreature.pawId - 1];
+        try
+        {
+            WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
+            nameContainer.text = gm.currentCreature.name;
+            pawprintRenderer.sprite = sprites[gm.currentCreature.pawId - 1];
+        }
+        catch(System.Exception e)
+        {
+
+        }
+        
     }
 
     // Update is called once per frame

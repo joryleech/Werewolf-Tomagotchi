@@ -10,17 +10,21 @@ public class WerewolfTomagachiGamemode : GameModeBase
     public System.Random rng;
     public bool forceLoad;
 
+
     public override void Start()
     {
         base.Start();
-        rng = new System.Random();
-        currentCreature = new Creature();
-        currentRoom = new Room();
-
-        if(forceLoad)
+        if(current = this)
         {
-            this.Load();
+            rng = new System.Random();
+            currentCreature = new Creature();
+            currentRoom = new Room();
+            if (forceLoad)
+            {
+                this.Load();
+            }
         }
+        
     }
 
     public void Load(bool file_op = true)
@@ -67,6 +71,41 @@ public class WerewolfTomagachiGamemode : GameModeBase
     {
         return true;
     }
+
+    public event Action cleanActions;
+    public void Clean()
+    {
+        if (cleanActions != null)
+        {
+            cleanActions();
+        }
+        currentRoom.Clean();
+    }
+
+    public event Action updateLightActions;
+    public void toggleLight()
+    {
+        this.updateLight(!this.currentRoom.lightOn);
+    }
+
+    public void updateLight(bool newLightOn)
+    {
+        Debug.Log($"Updating Light {newLightOn}");
+        this.currentRoom.lightOn = newLightOn;
+        if (updateLightActions != null)
+        {
+            updateLightActions();
+        }
+    }
+    public event Action updateFurnitureActions;
+    public void updateFurniture()
+    {
+        if (updateFurnitureActions != null)
+        {
+            updateFurnitureActions();
+        }
+    }
+
 }
 
 public class Room
@@ -78,6 +117,7 @@ public class Room
         furniture = new Furniture[] {
             new Furniture("lamp")
         };
+        furniture[0].owned = true;
     }
 
     public bool lightOn = true;
@@ -95,7 +135,17 @@ public class Room
         }
     }
 
-
+    public Furniture getFurnitureItem(string id)
+    {
+        try
+        {
+           return Array.Find(furniture, p => p.id == id);
+        }
+        catch (ArgumentNullException e)
+        {
+            return null;
+        }
+    }
 
     public void Load(SaveManager s, string preface = "")
     {
@@ -119,6 +169,18 @@ public class Room
         {
             f.clean();
         }
+    }
+
+    public bool needsClean()
+    {
+        foreach (Furniture f in furniture)
+        {
+            if(f.needsCleaned())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
@@ -155,14 +217,22 @@ public class Furniture
             this.broken = true;
         }
     }
+
+    public bool needsCleaned()
+    {
+        return this.broken || this.id == "poop";
+    }
+
     public void clean()
     {
-        if (this.broken || this.id == "poop")
+        if (needsCleaned())
         {
             this.owned = false;
             this.broken = false;
         }
     }
+
+
 }
 
 public class Creature

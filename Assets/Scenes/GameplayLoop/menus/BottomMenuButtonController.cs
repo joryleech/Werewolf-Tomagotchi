@@ -41,8 +41,10 @@ public class BottomMenuButtonController : MonoBehaviour
                     gm.changeMenu("furniture");
                     break;
                 case BottomMenuButtonType.light:
+                    gm.toggleLight();
                     break;
                 case BottomMenuButtonType.clean:
+                    gm.Clean();
                     break;
                 case BottomMenuButtonType.stats:
                     gm.changeMenu("stats");
