@@ -9,6 +9,7 @@ public enum CreatureStatus
     idle,
     wandering,
     complain_hunger,
+    manual_override_1,
 }
 public class CreatureController : MonoBehaviour
 {
@@ -31,12 +32,14 @@ public class CreatureController : MonoBehaviour
     public float stat_sleeping_happy_loss_per_second = 1.0f;
 
     public float walk_speed = 1.0f;
+    private Rigidbody2D rb;
 
     void Start()
     {
         status = CreatureStatus.idle;
         WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
         gm.cleanActions += onClean;
+        rb = this.GetComponent<Rigidbody2D>();
     }
 
     private void OnDestroy()
@@ -89,11 +92,33 @@ public class CreatureController : MonoBehaviour
             case CreatureStatus.sleeping:
                 actionSleep();
                 break;
+            case CreatureStatus.manual_override_1:
+                actionManualOverride1();
+                break;
             default:
                 Debug.LogError($"Status not set or finished: {status}");
                 this.status = CreatureStatus.idle;
                 break;
         }
+    }
+
+    private bool MoveTowardDestination(Vector2 destination)
+    {
+        Vector2 pos = this.transform.position;
+        if (Vector2.Distance(destination, pos) >= 0.1f)
+        {
+            rb.velocity = ((destination - pos).normalized) * walk_speed;
+            Debug.Log($"Mag: {rb.velocity.magnitude} {rb.velocity}");
+            return false;
+        }
+        rb.velocity = Vector2.zero;
+        return true;
+    }
+
+    private Vector3 manualOverride1_destination;
+    private void actionManualOverride1()
+    {
+        this.MoveTowardDestination(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 
     private void updateNeeds()
