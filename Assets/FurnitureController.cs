@@ -9,6 +9,9 @@ public class FurnitureController : MonoBehaviour
     public Sprite brokenSprite;
     public SpriteRenderer sr;
 
+    public Transform creatureUsePosition;
+    
+
     public bool debug_toggleBroken = false;
     // Start is called before the first frame update
     void Start()

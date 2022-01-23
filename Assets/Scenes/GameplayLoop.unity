@@ -447,6 +447,11 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.10290432
       objectReference: {fileID: 0}
+    - target: {fileID: 7775253898078730441, guid: f6fe5feeff1d7174682ba8323b2d4c50,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.183
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6fe5feeff1d7174682ba8323b2d4c50, type: 3}
 --- !u!4 &171897827 stripped
@@ -1293,6 +1298,11 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.25403434
       objectReference: {fileID: 0}
+    - target: {fileID: 7775253898078730441, guid: f6fe5feeff1d7174682ba8323b2d4c50,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.447
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6fe5feeff1d7174682ba8323b2d4c50, type: 3}
 --- !u!4 &557539136 stripped
@@ -1426,6 +1436,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Offset.y
       value: 0.0872888
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775253898078730441, guid: f6fe5feeff1d7174682ba8323b2d4c50,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.807
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6fe5feeff1d7174682ba8323b2d4c50, type: 3}
@@ -3642,7 +3657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.008, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1442894406
@@ -4850,6 +4865,11 @@ PrefabInstance:
       propertyPath: walkingArea
       value: 
       objectReference: {fileID: 1066996216}
+    - target: {fileID: 1312897847015285840, guid: dfb6ff1fb5dbcd948b37f07efaca1617,
+        type: 3}
+      propertyPath: maxActionPoopTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1312897847015285840, guid: dfb6ff1fb5dbcd948b37f07efaca1617,
         type: 3}
       propertyPath: stat_sleep_loss_per_second

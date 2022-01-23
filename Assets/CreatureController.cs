@@ -15,7 +15,8 @@ public enum CreatureStatus
     manual_override_1,
     transform,
     gratitude_happy,
-    poop
+    poop, 
+    destroy_furniture,
 }
 
 public enum CreatureAnimation
@@ -25,6 +26,7 @@ public enum CreatureAnimation
     sleep = 2,
     speak = 3,
     pooping = 4,
+    transforming = 5
 }
 public class CreatureController : MonoBehaviour
 {
@@ -62,6 +64,8 @@ public class CreatureController : MonoBehaviour
     public EmotionBubble[] speechBubbles;
     public SpriteRenderer currentSpeechBubble;
 
+    public FurnitureController[] sceneFurniture;
+
     public Animator spriteAnimator;
 
 
@@ -83,9 +87,11 @@ public class CreatureController : MonoBehaviour
 
     void Start()
     {
+        sceneFurniture = UnityEngine.Object.FindObjectsOfType<FurnitureController>();
         status = CreatureStatus.idle;
         WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
         gm.cleanActions += onClean;
+        gm.updateLightActions += onLightChange;
         rb = this.GetComponent<Rigidbody2D>();
     }
 
@@ -93,6 +99,13 @@ public class CreatureController : MonoBehaviour
     {
         WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
         gm.cleanActions -= onClean;
+        gm.updateLightActions -= onLightChange;
+    }
+
+    void onLightChange()
+    {
+        spriteAnimator.SetTrigger("forceTransform");
+        this.changeStatus(CreatureStatus.transform);
     }
 
     void onClean()
@@ -105,11 +118,9 @@ public class CreatureController : MonoBehaviour
             creature.stat_happy = getStatValue(creature.stat_happy - stat_happiness_lost_from_uneeded_clean*2);
         } else if( room.needsClean() || creature.stat_dirty <= needs_cleaned_threshold)
         {
-            Debug.Log("which triggered");
             creature.stat_happy = getStatValue(creature.stat_happy + stat_happiness_from_needed_clean);
         }else
         {
-            Debug.Log("which triggered2");
             creature.stat_happy = getStatValue(creature.stat_happy - stat_happiness_lost_from_uneeded_clean);
         }
         creature.stat_dirty = 100;
@@ -167,10 +178,25 @@ public class CreatureController : MonoBehaviour
             case CreatureStatus.manual_override_1:
                 actionManualOverride1();
                 break;
+            case CreatureStatus.transform:
+                actionTransform();
+                break;
             default:
                 Debug.LogError($"Status not set or finished: {status}");
                 this.changeStatus(CreatureStatus.idle);
                 break;
+        }
+    }
+
+    private float maxActionTransformTime = 2.0f;
+    private void actionTransform()
+    {
+        rb.velocity = Vector2.zero;
+        changeAnimation(CreatureAnimation.transforming);
+        if (timeSpentInCurrentStatus > maxActionTransformTime)
+        {
+            changeStatus(CreatureStatus.idle);
+            actionWanderingDestination = Vector2.negativeInfinity;
         }
     }
 
@@ -211,6 +237,8 @@ public class CreatureController : MonoBehaviour
     public float timeSpentInCurrentStatus;
     public void changeStatus(CreatureStatus newStatus)
     {
+        WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
+        gm.Save();
         this.setEmotionBubble("");
         timeSpentInCurrentStatus = 0;
         this.status = newStatus;
