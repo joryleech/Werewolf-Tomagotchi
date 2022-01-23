@@ -5,6 +5,7 @@ using TMPro;
 public class TopMenuController : MonoBehaviour
 {
     public TMPro.TMP_Text nameContainer;
+    public TMPro.TMP_Text moneyContainer;
     public Sprite[] sprites;
     public SpriteRenderer pawprintRenderer;
 
@@ -27,7 +28,9 @@ public class TopMenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
+        moneyContainer.text = System.Math.Min(gm.currentCreature.money,9999).ToString("");
         
+
     }
 }

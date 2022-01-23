@@ -29,6 +29,7 @@ public class PawprintController : MonoBehaviour
         if (timeSinceWiggleAttempt > 0.8f)
         {
             timeSinceWiggleAttempt = 0;
+            
             if (RNGSingleton.Next(1, 9) <= 1)
             {
                 anim.SetTrigger("wiggle");

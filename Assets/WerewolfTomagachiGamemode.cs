@@ -14,7 +14,7 @@ public class WerewolfTomagachiGamemode : GameModeBase
     public override void Start()
     {
         base.Start();
-        if(current = this)
+        if(current == this)
         {
             rng = new System.Random();
             currentCreature = new Creature();
@@ -24,7 +24,7 @@ public class WerewolfTomagachiGamemode : GameModeBase
                 this.Load();
             }
         }
-        
+
     }
 
     public void Load(bool file_op = true)
@@ -104,6 +104,7 @@ public class WerewolfTomagachiGamemode : GameModeBase
         {
             updateFurnitureActions();
         }
+        Save();
     }
 
 }
@@ -115,7 +116,9 @@ public class Room
     public Room()
     {
         furniture = new Furniture[] {
-            new Furniture("lamp")
+            new Furniture("lamp"),
+            new Furniture("table"),
+            new Furniture("loom")
         };
         furniture[0].owned = true;
     }
@@ -205,11 +208,17 @@ public class Furniture
         s.setKey(preface + id + "." + "broken", broken);
         s.setKey(preface + id + "." + "owned", owned);
     }
+
     public void Purchase()
     {
         this.owned = true;
         this.broken = false;
     }
+    public bool isPurchasable()
+    {
+        return !this.owned || this.broken;
+    }
+
     public void Break()
     {
         if(this.owned)

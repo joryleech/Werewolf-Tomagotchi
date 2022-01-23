@@ -43,7 +43,6 @@ public class CleaningWaveScript : MonoBehaviour
         {
             currentPosition = background.transform.position;
             background.transform.position = Vector3.Lerp(currentPosition, openPosition, 1 - (Mathf.Pow(timeToOpen, Time.deltaTime)));
-            Debug.Log("Waxing");
             yield return new WaitForEndOfFrame();
         }
         WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);

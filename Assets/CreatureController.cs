@@ -54,8 +54,7 @@ public class CreatureController : MonoBehaviour
         if(!gm.currentRoom.isLightOn())
         {
             creature.stat_happy = getStatValue(creature.stat_happy - stat_happiness_lost_from_uneeded_clean*2);
-        }
-        else if( room.needsClean() || creature.stat_dirty <= needs_cleaned_threshold)
+        } else if( room.needsClean() || creature.stat_dirty <= needs_cleaned_threshold)
         {
             creature.stat_happy = getStatValue(creature.stat_happy + stat_happiness_from_needed_clean);
         }else
@@ -132,7 +131,7 @@ public class CreatureController : MonoBehaviour
 
         currentCreature.stat_tired = getStatValue(currentCreature.stat_tired + (stat_tired_offset * timeSinceUpdated));
         currentCreature.stat_hungry = getStatValue(currentCreature.stat_hungry + (stat_hungry_offset * timeSinceUpdated));
-        currentCreature.stat_happy = getStatValue(currentCreature.stat_hungry + (stat_happy_offset * timeSinceUpdated));
+        currentCreature.stat_happy = getStatValue(currentCreature.stat_happy + (stat_happy_offset * timeSinceUpdated));
         timeSinceUpdated = 0;
     }
 
@@ -163,10 +162,17 @@ public class CreatureController : MonoBehaviour
 
     public void actionSleep()
     {
+        WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
+        Creature currentCreature = gm.currentCreature;
 
+        if(currentCreature.stat_tired < 50)
+        {
+            //Rest
+        }else
+        {
+            status = CreatureStatus.idle;
+        }
     }
-
-
 }
 
 public class ActiveOption

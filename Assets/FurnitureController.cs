@@ -15,6 +15,7 @@ public class FurnitureController : MonoBehaviour
     {
         WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
         gm.updateFurnitureActions += updateSprite;
+        updateSprite();
 
     }
 
