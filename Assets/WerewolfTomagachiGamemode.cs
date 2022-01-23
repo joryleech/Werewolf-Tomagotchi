@@ -104,7 +104,7 @@ public class WerewolfTomagachiGamemode : GameModeBase
         {
             updateFurnitureActions();
         }
-        Save();
+  
     }
 
 }
