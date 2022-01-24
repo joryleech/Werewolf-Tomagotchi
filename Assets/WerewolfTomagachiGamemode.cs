@@ -230,7 +230,7 @@ public class Furniture
 
     public bool needsCleaned()
     {
-        return this.broken || this.id == "poop";
+        return this.owned && (this.broken || this.id == "poop");
     }
 
     public void clean()

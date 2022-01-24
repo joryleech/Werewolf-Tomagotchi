@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum CreatureStatus
@@ -16,7 +17,7 @@ public enum CreatureStatus
     transform,
     gratitude_happy,
     poop, 
-    destroy_furniture,
+    break_furniture,
 }
 
 public enum CreatureAnimation
@@ -26,7 +27,8 @@ public enum CreatureAnimation
     sleep = 2,
     speak = 3,
     pooping = 4,
-    transforming = 5
+    transforming = 5,
+    cloud = 6
 }
 public class CreatureController : MonoBehaviour
 {
@@ -172,6 +174,9 @@ public class CreatureController : MonoBehaviour
             case CreatureStatus.poop:
                 actionPoop();
                 break;
+            case CreatureStatus.break_furniture:
+                actionBreakFurniture();
+                break;
             case CreatureStatus.complain_hunger:
                 actionExpressEmotion("hungry");
                 break;
@@ -185,6 +190,51 @@ public class CreatureController : MonoBehaviour
                 Debug.LogError($"Status not set or finished: {status}");
                 this.changeStatus(CreatureStatus.idle);
                 break;
+        }
+    }
+
+    private FurnitureController actionBreakFurnitureSelectedFurniture;
+    private float maxActionBreakFurnitureTime = 5.0f;
+    private void actionBreakFurniture()
+    {
+        WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
+        if (!isWarewolf())
+        {
+            changeStatus(CreatureStatus.idle);
+            return;
+        }
+        if (actionBreakFurnitureSelectedFurniture == null)
+        {
+            //Select Furniture
+            FurnitureController[] goodFurniture = sceneFurniture.Where(x =>!(x.GetFurniture().needsCleaned())).ToArray<FurnitureController>();
+            if(goodFurniture.Length > 0)
+            {
+                actionBreakFurnitureSelectedFurniture = goodFurniture[gm.rng.Next(goodFurniture.Length)];
+            }
+            else
+            {
+                this.changeStatus(CreatureStatus.idle);
+                return;
+            }
+        }
+        if (this.MoveTowardDestination(actionBreakFurnitureSelectedFurniture.creatureUsePosition.position))
+        {
+            changeAnimation(CreatureAnimation.cloud);
+            Furniture f = actionBreakFurnitureSelectedFurniture.GetFurniture();
+            if (!f.broken)
+            {
+                f.Break();
+                gm.updateFurniture();
+            }
+        }
+        else
+        {
+            changeAnimation(CreatureAnimation.walking);
+            timeSpentInCurrentStatus = 0;
+        }
+        if (timeSpentInCurrentStatus > maxActionBreakFurnitureTime)
+        {
+            changeStatus(CreatureStatus.idle);
         }
     }
 
@@ -239,6 +289,7 @@ public class CreatureController : MonoBehaviour
     {
         WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
         gm.Save();
+        actionBreakFurnitureSelectedFurniture = null;
         this.setEmotionBubble("");
         timeSpentInCurrentStatus = 0;
         this.status = newStatus;

@@ -61,7 +61,7 @@ public class FurnitureController : MonoBehaviour
         }
     }
 
-    Furniture GetFurniture()
+    public Furniture GetFurniture()
     {
         WerewolfTomagachiGamemode gm = ((WerewolfTomagachiGamemode)WerewolfTomagachiGamemode.current);
         Room cr = gm.currentRoom;
